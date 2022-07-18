@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Каталог{% endblock title %}
+{% block content %}
+    <h1>Приветствую в каталоге Healcure!</h1>
+    {% if user.is_authenticated %}
+    <h2><a href="{% url 'product_create' %}">Добавить товар</a></h2>
+    {% endif %}
+    <h1> Список товаров: </h1>
+    {% if product_list %}
+    <ul>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for product in product_list %}
+              <div class="col">
+                <div class="card">
+                  <img src="{% static '/images/products/el-hawaj.jpg' %}"  class="card-img-top" style="width: 200px; height: 200px" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{product.brand}}</h6>
+                        <p class="card-text" style="height:50px; overflow:hidden"> {{product.main_desc}} </p>
+                        <a href="{{product.get_absolute_url}}" class="btn btn-primary ">Подробнее</a>
+                        {% if user.is_authenticated %}
+                        <a href="/product/update/{{product.id}}">Изменить</a>
+                        <a href="/product/delete/{{product.id}}">Удалить</a>
+                        {% endif%}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+    </ul>
+    {% else %}
+            <p>В базе данных нет товаров</p>
+    {% endif %}
+
+{% endblock content %}
+
